@@ -21,7 +21,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Fix gradle wrapper
-        run: sed -i 's/gradle-8.4-bin/gradle-4.9-bin/g' gradle/wrapper/gradle-wrapper.properties
+        run: sed -i 's/gradle-8.4-bin/gradle-2.14-bin/g' gradle/wrapper/gradle-wrapper.properties
 
       - name: Build
         run: ./gradlew build
