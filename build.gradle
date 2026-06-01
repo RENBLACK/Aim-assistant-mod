@@ -29,10 +29,6 @@ minecraft {
     runDir = "run"
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
 }
 
