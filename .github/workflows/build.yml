@@ -20,11 +20,16 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Fix gradle wrapper
+      - name: Fix gradle version
         run: sed -i 's/gradle-8.4-bin/gradle-2.14-bin/g' gradle/wrapper/gradle-wrapper.properties
 
+      - name: Copy minecraft jar
+        run: |
+          mkdir -p ~/.gradle/caches/minecraft/net/minecraft/minecraft/1.7.10
+          cp 1.7.10.jar ~/.gradle/caches/minecraft/net/minecraft/minecraft/1.7.10/minecraft-1.7.10.jar
+
       - name: Build
-        run: ./gradlew build
+        run: ./gradlew build -x downloadClient -x downloadServer -x getAssetsIndex -x getAssets
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
