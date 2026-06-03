@@ -33,8 +33,14 @@ jobs:
         cp 1.7.10.jar ~/.gradle/caches/minecraft/net/minecraft/minecraft/1.7.10/minecraft-1.7.10.jar
         cp 1.7.10.jar ~/.gradle/caches/minecraft/net/minecraft/minecraft_server/1.7.10/minecraft_server-1.7.10.jar
 
+    - name: Patch ForgeGradle checksum
+      run: |
+        cd ~/.gradle/caches/minecraft/net/minecraft/minecraft/1.7.10
+        CRC=$(python3 -c "import binascii,sys; data=open('minecraft-1.7.10.jar','rb').read(); print('%08x' % (binascii.crc32(data) & 0xffffffff))")
+        echo "Client CRC32: $CRC"
+
     - name: Compilar o Mod com Forge
-      run: ./gradlew build -x downloadClient -x downloadServer -x getAssetsIndex -x getAssets
+      run: ./gradlew build -x downloadClient -x downloadServer -x getAssetsIndex -x getAssets --no-daemon
 
     - name: Disponibilizar o Mod para Download
       uses: actions/upload-artifact@v4
