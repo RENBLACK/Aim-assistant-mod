@@ -2,7 +2,6 @@ package com.renblack.killaura;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.client.Minecraft;
 
 public class CommandRange extends CommandBase {
 
@@ -19,10 +18,8 @@ public class CommandRange extends CommandBase {
             return;
         }
         try {
-            final double newRange = Double.parseDouble(args[0]);
-            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-                public void run() { KillAuraMod.handler.setRange(newRange); }
-            });
+            double newRange = Double.parseDouble(args[0]);
+            KillAuraMod.handler.setRange(newRange);
         } catch (NumberFormatException e) {
             KillAuraMod.handler.sendMessage("§cUso: /range <numero> | Exemplo: /range 10");
         }
