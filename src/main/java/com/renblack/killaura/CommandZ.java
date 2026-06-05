@@ -2,7 +2,6 @@ package com.renblack.killaura;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.client.Minecraft;
 
 public class CommandZ extends CommandBase {
 
@@ -14,9 +13,7 @@ public class CommandZ extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-            public void run() { KillAuraMod.handler.toggleCameraLock(); }
-        });
+        KillAuraMod.handler.toggleCameraLock();
     }
 
     @Override
