@@ -19,7 +19,6 @@ public class KillAuraMod {
     public void init(FMLInitializationEvent event) {
         handler = new KillAuraHandler();
         MinecraftForge.EVENT_BUS.register(handler);
-
         KeyBindingHandler keyHandler = new KeyBindingHandler(handler);
         MinecraftForge.EVENT_BUS.register(keyHandler);
     }
@@ -29,5 +28,6 @@ public class KillAuraMod {
         event.registerServerCommand(new CommandX());
         event.registerServerCommand(new CommandAuto());
         event.registerServerCommand(new CommandZ());
+        event.registerServerCommand(new CommandRange());
     }
 }

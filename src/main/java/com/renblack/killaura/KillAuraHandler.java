@@ -13,7 +13,7 @@ import java.util.List;
 
 public class KillAuraHandler {
 
-    private static final double RANGE = 5.0;
+    public double range = 5.0;
 
     private boolean killAuraEnabled = false;
     private boolean cameraLockEnabled = false;
@@ -61,7 +61,7 @@ public class KillAuraHandler {
         Minecraft mc = Minecraft.getMinecraft();
         List<EntityLivingBase> entities = mc.theWorld.getEntitiesWithinAABB(
             EntityLivingBase.class,
-            player.boundingBox.expand(RANGE, RANGE, RANGE)
+            player.boundingBox.expand(range, range, range)
         );
 
         EntityLivingBase nearest = null;
@@ -73,7 +73,7 @@ public class KillAuraHandler {
             if (entity instanceof EntityAnimal) continue;
 
             double dist = player.getDistanceToEntity(entity);
-            if (dist < nearestDist && dist <= RANGE) {
+            if (dist < nearestDist && dist <= range) {
                 nearest = entity;
                 nearestDist = dist;
             }
@@ -109,7 +109,12 @@ public class KillAuraHandler {
         sendMessage("Auto Click: " + (autoClickEnabled ? "§aATIVADO" : "§cDESATIVADO"));
     }
 
-    private void sendMessage(String msg) {
+    public void setRange(double newRange) {
+        range = newRange;
+        sendMessage("§eAlcance definido para: §f" + newRange + " blocos");
+    }
+
+    public void sendMessage(String msg) {
         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(msg));
     }
 }

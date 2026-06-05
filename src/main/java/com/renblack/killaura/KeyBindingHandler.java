@@ -30,16 +30,9 @@ public class KeyBindingHandler {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
             int keyCode = Keyboard.getEventKey();
-
-            if (keyCode == killAuraKey.getKeyCode()) {
-                handler.toggleKillAura();
-            }
-            else if (keyCode == cameraLockKey.getKeyCode()) {
-                handler.toggleCameraLock();
-            }
-            else if (keyCode == autoClickKey.getKeyCode()) {
-                handler.toggleAutoClick();
-            }
+            if (keyCode == killAuraKey.getKeyCode()) handler.toggleKillAura();
+            else if (keyCode == cameraLockKey.getKeyCode()) handler.toggleCameraLock();
+            else if (keyCode == autoClickKey.getKeyCode()) handler.toggleAutoClick();
         }
     }
 }
