@@ -1,5 +1,6 @@
 package com.renblack.killaura;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -19,8 +20,11 @@ public class KillAuraMod {
     public void init(FMLInitializationEvent event) {
         handler = new KillAuraHandler();
         MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
+
         KeyBindingHandler keyHandler = new KeyBindingHandler(handler);
         MinecraftForge.EVENT_BUS.register(keyHandler);
+        FMLCommonHandler.instance().bus().register(keyHandler);
     }
 
     @EventHandler

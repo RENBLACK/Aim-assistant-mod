@@ -2,6 +2,7 @@ package com.renblack.killaura;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandAuto extends CommandBase {
 
@@ -13,7 +14,10 @@ public class CommandAuto extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        KillAuraMod.handler.toggleAutoClick();
+        KillAuraHandler.autoClickEnabled = !KillAuraHandler.autoClickEnabled;
+        sender.addChatMessage(new ChatComponentText(
+            "Auto Click: " + (KillAuraHandler.autoClickEnabled ? "§aATIVADO" : "§cDESATIVADO")
+        ));
     }
 
     @Override

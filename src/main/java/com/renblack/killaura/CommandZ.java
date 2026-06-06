@@ -2,6 +2,7 @@ package com.renblack.killaura;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandZ extends CommandBase {
 
@@ -13,7 +14,10 @@ public class CommandZ extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        KillAuraMod.handler.toggleCameraLock();
+        KillAuraHandler.cameraLockEnabled = !KillAuraHandler.cameraLockEnabled;
+        sender.addChatMessage(new ChatComponentText(
+            "Camera Lock: " + (KillAuraHandler.cameraLockEnabled ? "§aATIVADO" : "§cDESATIVADO")
+        ));
     }
 
     @Override

@@ -13,14 +13,12 @@ import java.util.List;
 
 public class KillAuraHandler {
 
-    public double range = 5.0;
-
-    private boolean killAuraEnabled = false;
-    private boolean cameraLockEnabled = false;
-    private boolean autoClickEnabled = false;
+    public static double range = 5.0;
+    public static boolean killAuraEnabled = false;
+    public static boolean cameraLockEnabled = false;
+    public static boolean autoClickEnabled = false;
 
     private int tickCooldown = 0;
-    private int debugTick = 0;
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
@@ -30,24 +28,6 @@ public class KillAuraHandler {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         EntityPlayer player = mc.thePlayer;
-
-        // Debug a cada 60 ticks (3 segundos)
-        if (killAuraEnabled) {
-            debugTick++;
-            if (debugTick >= 60) {
-                debugTick = 0;
-                List<EntityLivingBase> entities = mc.theWorld.getEntitiesWithinAABB(
-                    EntityLivingBase.class,
-                    player.boundingBox.expand(range, range, range)
-                );
-                int count = 0;
-                for (EntityLivingBase e : entities) {
-                    if (e != player && !(e instanceof EntityPlayer)) count++;
-                }
-                sendMessage("§eKill Aura ativo | Mobs proximos: §f" + count + " | Range: §f" + range);
-            }
-        }
-
         EntityLivingBase nearestMob = getNearestMob(player);
 
         if (cameraLockEnabled && nearestMob != null) {
@@ -60,7 +40,8 @@ public class KillAuraHandler {
         }
 
         if (killAuraEnabled && nearestMob != null) {
-            player.attackTargetEntityWithCurrentItem(nearestMob);
+            mc.playerController.attackEntity(player, nearestMob);
+            player.swingItem();
             tickCooldown = 10;
         }
 
@@ -69,7 +50,8 @@ public class KillAuraHandler {
                 && mc.objectMouseOver.entityHit instanceof EntityLivingBase) {
                 EntityLivingBase target = (EntityLivingBase) mc.objectMouseOver.entityHit;
                 if (!(target instanceof EntityPlayer)) {
-                    player.attackTargetEntityWithCurrentItem(target);
+                    mc.playerController.attackEntity(player, target);
+                    player.swingItem();
                     tickCooldown = 10;
                 }
             }
@@ -115,7 +97,6 @@ public class KillAuraHandler {
 
     public void toggleKillAura() {
         killAuraEnabled = !killAuraEnabled;
-        debugTick = 0;
         sendMessage("Kill Aura: " + (killAuraEnabled ? "§aATIVADO" : "§cDESATIVADO"));
     }
 
@@ -135,6 +116,8 @@ public class KillAuraHandler {
     }
 
     public void sendMessage(String msg) {
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(msg));
+        if (Minecraft.getMinecraft().thePlayer != null) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(msg));
+        }
     }
 }

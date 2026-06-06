@@ -2,6 +2,7 @@ package com.renblack.killaura;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 public class CommandX extends CommandBase {
 
@@ -13,7 +14,10 @@ public class CommandX extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        KillAuraMod.handler.toggleKillAura();
+        KillAuraHandler.killAuraEnabled = !KillAuraHandler.killAuraEnabled;
+        sender.addChatMessage(new ChatComponentText(
+            "Kill Aura: " + (KillAuraHandler.killAuraEnabled ? "§aATIVADO" : "§cDESATIVADO")
+        ));
     }
 
     @Override
