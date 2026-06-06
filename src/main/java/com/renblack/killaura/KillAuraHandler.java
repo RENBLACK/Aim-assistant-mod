@@ -20,6 +20,7 @@ public class KillAuraHandler {
     private boolean autoClickEnabled = false;
 
     private int tickCooldown = 0;
+    private int debugTick = 0;
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
@@ -29,6 +30,24 @@ public class KillAuraHandler {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         EntityPlayer player = mc.thePlayer;
+
+        // Debug a cada 60 ticks (3 segundos)
+        if (killAuraEnabled) {
+            debugTick++;
+            if (debugTick >= 60) {
+                debugTick = 0;
+                List<EntityLivingBase> entities = mc.theWorld.getEntitiesWithinAABB(
+                    EntityLivingBase.class,
+                    player.boundingBox.expand(range, range, range)
+                );
+                int count = 0;
+                for (EntityLivingBase e : entities) {
+                    if (e != player && !(e instanceof EntityPlayer)) count++;
+                }
+                sendMessage("§eKill Aura ativo | Mobs proximos: §f" + count + " | Range: §f" + range);
+            }
+        }
+
         EntityLivingBase nearestMob = getNearestMob(player);
 
         if (cameraLockEnabled && nearestMob != null) {
@@ -96,6 +115,7 @@ public class KillAuraHandler {
 
     public void toggleKillAura() {
         killAuraEnabled = !killAuraEnabled;
+        debugTick = 0;
         sendMessage("Kill Aura: " + (killAuraEnabled ? "§aATIVADO" : "§cDESATIVADO"));
     }
 
