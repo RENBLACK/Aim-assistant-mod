@@ -28,9 +28,9 @@ public class KillAuraHandler {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         EntityPlayer player = mc.thePlayer;
-        EntityLivingBase nearestMob = getNearestMob(player);
+        EntityLivingBase nearestPlayer = getNearestPlayer(Mob);
 
-        if (cameraLockEnabled && nearestMob != null) {
+        if (cameraLockEnabled && nearestPlayer != null) {
             lockCameraOnEntity(player, nearestMob);
         }
 
@@ -39,8 +39,8 @@ public class KillAuraHandler {
             return;
         }
 
-        if (killAuraEnabled && nearestMob != null) {
-            mc.playerController.attackEntity(player, nearestMob);
+        if (killAuraEnabled && nearestPlayer != null) {
+            mc.playerController.attackEntity(player, nearestPlayer);
             player.swingItem();
             tickCooldown = 10;
         }
@@ -58,7 +58,7 @@ public class KillAuraHandler {
         }
     }
 
-    private EntityLivingBase getNearestMob(EntityPlayer player) {
+    private EntityLivingBase getNearestPlayer(EntityPlayer player) {
         Minecraft mc = Minecraft.getMinecraft();
         List<EntityLivingBase> entities = mc.theWorld.getEntitiesWithinAABB(
             EntityLivingBase.class,
