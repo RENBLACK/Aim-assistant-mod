@@ -1,7 +1,7 @@
 [{
-    "modid": "killaura",
-    "name": "Kill Aura Mobs",
-    "description": "Ataca mobs automaticamente.",
+    "modid": "renaimassistant",
+    "name": "RenAim Assistant",
+    "description": "Mod de combate assistido por RenBlack.",
     "version": "1.0",
     "mcversion": "1.7.10",
     "authorList": ["renblack"]

@@ -22,8 +22,8 @@ buildscript {
 apply plugin: 'forge'
 
 version = "1.0"
-group = "com.renblack.killaura"
-archivesBaseName = "RenAura"
+group = "com.renblack.renaimassistant"
+archivesBaseName = "RenAimAssistant"
 
 compileJava.options.encoding = 'UTF-8'
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8

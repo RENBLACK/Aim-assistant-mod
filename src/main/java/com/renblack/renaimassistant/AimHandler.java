@@ -1,4 +1,4 @@
-package com.renblack.killaura;
+package com.renblack.renaimassistant;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -11,7 +11,7 @@ import net.minecraft.util.MathHelper;
 
 import java.util.List;
 
-public class KillAuraHandler {
+public class AimHandler {
 
     public static double range = 5.0;
     public static boolean killAuraEnabled = false;
@@ -28,9 +28,9 @@ public class KillAuraHandler {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         EntityPlayer player = mc.thePlayer;
-        EntityLivingBase nearestPlayer = getNearestPlayer(Mob);
+        EntityLivingBase nearestMob = getNearestMob(player);
 
-        if (cameraLockEnabled && nearestPlayer != null) {
+        if (cameraLockEnabled && nearestMob != null) {
             lockCameraOnEntity(player, nearestMob);
         }
 
@@ -39,8 +39,8 @@ public class KillAuraHandler {
             return;
         }
 
-        if (killAuraEnabled && nearestPlayer != null) {
-            mc.playerController.attackEntity(player, nearestPlayer);
+        if (killAuraEnabled && nearestMob != null) {
+            mc.playerController.attackEntity(player, nearestMob);
             player.swingItem();
             tickCooldown = 10;
         }
@@ -58,7 +58,7 @@ public class KillAuraHandler {
         }
     }
 
-    private EntityLivingBase getNearestPlayer(EntityPlayer player) {
+    private EntityLivingBase getNearestMob(EntityPlayer player) {
         Minecraft mc = Minecraft.getMinecraft();
         List<EntityLivingBase> entities = mc.theWorld.getEntitiesWithinAABB(
             EntityLivingBase.class,
@@ -112,7 +112,7 @@ public class KillAuraHandler {
 
     public void setRange(double newRange) {
         range = newRange;
-        sendMessage("§eAlcance definido para: §f" + newRange + " blocos");
+        sendMessage("§eAlcance: §f" + newRange + " blocos");
     }
 
     public void sendMessage(String msg) {
