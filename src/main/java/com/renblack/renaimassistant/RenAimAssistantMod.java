@@ -4,7 +4,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = RenAimAssistantMod.MODID, version = RenAimAssistantMod.VERSION, name = RenAimAssistantMod.NAME)
@@ -25,11 +24,5 @@ public class RenAimAssistantMod {
         KeyHandler keyHandler = new KeyHandler(handler);
         MinecraftForge.EVENT_BUS.register(keyHandler);
         FMLCommonHandler.instance().bus().register(keyHandler);
-    }
-
-    @EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandAim());
-        event.registerServerCommand(new CommandRange());
     }
 }
