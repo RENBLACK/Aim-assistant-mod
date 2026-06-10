@@ -4,7 +4,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
@@ -28,10 +27,12 @@ public class AimHandler {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         EntityPlayer player = mc.thePlayer;
-        EntityLivingBase nearestMob = getNearestMob(player);
+        
+        // Usa a sua função de busca customizada que puxa apenas players
+        EntityLivingBase nearestPlayer = getNearestMob(player);
 
-        if (cameraLockEnabled && nearestMob != null) {
-            lockCameraOnEntity(player, nearestMob);
+        if (cameraLockEnabled && nearestPlayer != null) {
+            lockCameraOnEntity(player, nearestPlayer);
         }
 
         if (tickCooldown > 0) {
@@ -39,8 +40,9 @@ public class AimHandler {
             return;
         }
 
-        if (killAuraEnabled && nearestMob != null) {
-            mc.playerController.attackEntity(player, nearestMob);
+        if (killAuraEnabled && nearestPlayer != null) {
+            // Corrigido: Agora passa o 'player' que ataca e o 'nearestPlayer' que sofre o ataque
+            mc.playerController.attackEntity(player, nearestPlayer);
             player.swingItem();
             tickCooldown = 10;
         }
@@ -49,11 +51,10 @@ public class AimHandler {
             if (mc.objectMouseOver != null
                 && mc.objectMouseOver.entityHit instanceof EntityLivingBase) {
                 EntityLivingBase target = (EntityLivingBase) mc.objectMouseOver.entityHit;
-                if (!(target instanceof EntityPlayer)) {
-                    mc.playerController.attackEntity(player, target);
-                    player.swingItem();
-                    tickCooldown = 10;
-                }
+                
+                mc.playerController.attackEntity(player, target);
+                player.swingItem();
+                tickCooldown = 10;
             }
         }
     }
@@ -65,21 +66,21 @@ public class AimHandler {
             player.boundingBox.expand(range, range, range)
         );
 
-        EntityLivingBase nearest = null;
-        double nearestDist = Double.MAX_VALUE;
+        EntityLivingBase closestEntity = null;
+        double closestDistance = Double.MAX_VALUE;
 
         for (EntityLivingBase entity : entities) {
             if (entity == player) continue;
-            if (entity instanceof EntityPlayer) continue;
-            if (entity instanceof EntityAnimal) continue;
+            if (!entity.isEntityAlive()) continue;
+            if (!(entity instanceof EntityPlayer)) continue;
 
-            double dist = player.getDistanceToEntity(entity);
-            if (dist < nearestDist && dist <= range) {
-                nearest = entity;
-                nearestDist = dist;
+            double distance = player.getDistanceToEntity(entity);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestEntity = entity;
             }
         }
-        return nearest;
+        return closestEntity;
     }
 
     private void lockCameraOnEntity(EntityPlayer player, EntityLivingBase target) {
